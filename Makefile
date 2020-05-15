@@ -5,8 +5,8 @@ default: gnome-keyring-unlock
 
 main.o: libgnome-keyring/library/.libs/libgnome-keyring.a
 
-gnome-keyring-unlock: main.o libgnome-keyring/library/.libs/libgnome-keyring.a $(GDK_LIBS) /lib/x86_64-linux-gnu/libdbus-1.so.3 /usr/lib/x86_64-linux-gnu/libgcrypt.so.20
-	$(CC) -o $@  $^ 
+gnome-keyring-unlock: main.o libgnome-keyring/library/.libs/libgnome-keyring.a $(GDK_LIBS) 
+	$(CC) -o $@  $^ $(shell ldd libgnome-keyring/library/.libs/libgnome-keyring.so | fgrep -e libdbus -e libgcrypt | cut -f2 -d'>' | cut -d' ' -f2  | xargs)
 	strip -s $@
 
 clean: 
